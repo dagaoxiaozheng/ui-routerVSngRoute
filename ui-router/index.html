@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>ui-router</title>
+</head>
+<body>
+<ui>
+    <li><a ui-sref="subPage01({pageid:1,pageName:'subPage01'})">subPage01</a></li>
+    <li><a ui-sref="subPage02({pageid:2,pageName:'subPage02'})">subPage02</a></li>
+    <li><a ui-sref="subPage03({pageid:3,pageName:'subPage03'})">subPage03</a></li>
+</ui>
+<div ui-view></div>
+<script src="./angular.min.js"></script>
+<script src="./angular-ui-router.js"></script>
+<script>
+    var app = angular.module('app',['ui.router', 'subPage01', 'subPage02', 'subPage03']);
+    app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/subPage01');
+        $stateProvider
+            .state('subPage01',{
+                url : '/subPage01?pageid&pageName',
+                templateUrl : 'subPage01.html'
+            })
+            .state('subPage02',{
+                url : '/subPage02?pageid&pageName',
+                templateUrl : 'subPage02.html'
+            })
+            .state('subPage03',{
+                url : '/subPage03?pageid&pageName',
+                templateUrl : 'subPage03.html'
+            })
+    }])
+</script>
+<script>
+    angular.module('subPage01', [])
+    .controller('subPage01Controller', function ($scope, $stateParams, $state) {
+        $scope.pageid = $stateParams.pageid;
+        $scope.pagename = $stateParams.pageName;
+        $scope.goToPage02 = function () {
+            $state.go('subPage02')
+        };
+    })
+</script>
+<script>
+    angular.module('subPage02', [])
+    .controller('subPage02Controller', function ($scope, $stateParams, $state) {
+        $scope.pageid = $stateParams.pageid;
+        $scope.pagename = $stateParams.pageName;
+        $scope.goToPage03 = function () {
+            $state.go('subPage03')
+        };
+    })
+</script>
+<script>
+    angular.module('subPage03', [])
+    .controller('subPage03Controller', function ($scope, $stateParams, $state) {
+        $scope.pageid = $stateParams.pageid;
+        $scope.pagename = $stateParams.pageName;
+        $scope.goToPage01 = function () {
+            $state.go('subPage01')
+        };
+    })
+</script>
+</body>
+</html>

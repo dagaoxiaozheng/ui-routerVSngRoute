@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>ngRoute</title>
+</head>
+<body>
+<ui>
+    <li><a ng-href="#/subPage01?pageid=1&pageName='subPage01'">subPage01</a></li>
+    <li><a ng-href="#/subPage02?pageid=2&pageName='subPage02'">subPage02</a></li>
+    <li><a ng-href="#/subPage03?pageid=3&pageName='subPage03'">subPage03</a></li>
+</ui>
+<div ng-view></div>
+<script src="./angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular-route.js"></script>
+<script>
+    var app = angular.module('app',['ngRoute', 'subPage01', 'subPage02', 'subPage03']);
+    app.config(['$routeProvider', function ($routeProvider) {
+        $routeProvider
+            .when('/subPage01',{
+                templateUrl : 'subPage01.html'
+            })
+            .when('/subPage02',{
+                templateUrl : 'subPage02.html'
+            })
+            .when('/subPage03',{
+                templateUrl : 'subPage03.html'
+            })
+            .otherwise({
+                redirectTo: '/subPage01'
+            });
+    }])
+
+</script>
+<script>
+    angular.module('subPage01', [])
+    .controller('subPage01Controller', function ($scope, $routeParams, $location) {
+        $scope.pageid = $routeParams.pageid;
+        $scope.pagename = $routeParams.pageName;
+        $scope.goToPage02 = function () {
+            $location.path('/subPage02')
+        }
+    })
+</script>
+<script>
+    angular.module('subPage02', [])
+    .controller('subPage02Controller', function ($scope, $routeParams, $location) {
+        $scope.pageid = $routeParams.pageid;
+        $scope.pagename = $routeParams.pageName;
+        $scope.goToPage03 = function () {
+            $location.path('/subPage03')
+        }
+    })
+</script>
+<script>
+    angular.module('subPage03', [])
+    .controller('subPage03Controller', function ($scope, $routeParams, $location) {
+        $scope.pageid = $routeParams.pageid;
+        $scope.pagename = $routeParams.pageName;
+        $scope.goToPage01 = function () {
+            $location.path('/subPage01')
+        }
+    })
+</script>
+</body>
+</html>
